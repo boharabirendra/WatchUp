@@ -3,7 +3,7 @@ import { ChangePassword, IUser, UpdateUser } from "../interface/user.interface";
 
 export const registerUser = (user: IUser) => {
   const { fullName, email, password, profileUrl, refreshToken, imagePublicId} = user;
-  return prisma.users.create({
+  return prisma.user.create({
     data: {
       fullName,
       email,
@@ -16,7 +16,7 @@ export const registerUser = (user: IUser) => {
 };
 
 export const getUserByEmail = (email: string) => {
-  return prisma.users.findUnique({
+  return prisma.user.findUnique({
     where: {
       email,
     },
@@ -24,7 +24,7 @@ export const getUserByEmail = (email: string) => {
 };
 
 export const getUserById = (id: number) => {
-  return prisma.users.findUnique({
+  return prisma.user.findUnique({
     where: {
       id,
     },
@@ -32,7 +32,7 @@ export const getUserById = (id: number) => {
 };
 
 export const updateRefreshToken = (id: number, refreshToken: string) => {
-  return prisma.users.update({
+  return prisma.user.update({
     data: {
       refreshToken,
     },
@@ -43,7 +43,7 @@ export const updateRefreshToken = (id: number, refreshToken: string) => {
 };
 
 export const logoutUser = (id: number) => {
-  return prisma.users.update({
+  return prisma.user.update({
     data: {
       refreshToken: "",
     },
@@ -57,7 +57,7 @@ export const changePassword = ({
   id,
   newPassword,
 }: Pick<ChangePassword, "id" | "newPassword">) => {
-  return prisma.users.update({
+  return prisma.user.update({
     data: {
       password: newPassword,
     },
@@ -68,7 +68,7 @@ export const changePassword = ({
 };
 
 export const updateUser = ({ id, email, fullName }: UpdateUser) => {
-  return prisma.users.update({
+  return prisma.user.update({
     data: {
       email,
       fullName,
@@ -79,10 +79,11 @@ export const updateUser = ({ id, email, fullName }: UpdateUser) => {
   });
 };
 
-export const updateUserProfile = (id: number, newUrl: string)=>{
-  return prisma.users.update({
+export const updateUserProfile = (id: number, newUrl: string, publicId: string)=>{
+  return prisma.user.update({
     data: {
-      profileUrl:newUrl
+      profileUrl:newUrl,
+      imagePublicId: publicId,
     },
     where:{
       id,

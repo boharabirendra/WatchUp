@@ -5,11 +5,12 @@ import {
   IUser,
   LoginCredentials,
   UserArgs,
-  UpdateUser
+  UpdateUser,
+  UpdaterUserProfile
 } from "../interface/user.interface";
 import * as UserModel from "../models/users.models";
 import { ApiError } from "../utils/ApiError.utils";
-import { uploadOnCloudinary } from "../utils/cloudinary.utils";
+import { deleteUserProfileFromCloud, uploadOnCloudinary } from "../utils/cloudinary.utils";
 import { generateHashedPassword } from "../utils/generateHashedPassword.utils";
 import loggerWithNameSpace from "../utils/logger.utils";
 
@@ -33,6 +34,7 @@ export const registerUser = async (user: IUser) => {
     let profile;
     if(user.profileUrl){
       profile = await uploadOnCloudinary(user.profileUrl);
+      console.log(profile);
     }
     const password = await generateHashedPassword(user.password);
     await UserModel.registerUser({
@@ -123,11 +125,28 @@ export const updateRefreshToken = async (id: number, refreshToken: string) => {
   }
 };
 
+
 /**Update user */
 export const updateUser = async({id, fullName, email}: UpdateUser) =>{
   const existingUser = await isUserExists({email});
   if(existingUser) throw new ApiError(HttpStatusCode.CONFLICT, `Email {${email}} is already exists.`);
   await UserModel.updateUser({id, email, fullName});
+}
+
+/**Update user profile image*/
+export const updateUserProfile = async({id, profileUrl}:UpdaterUserProfile)=>{
+  try {
+    const existingUser = await isUserExists({id});
+    if(existingUser?.imagePublicId){
+      await deleteUserProfileFromCloud(existingUser.imagePublicId);
+      const profile = await uploadOnCloudinary(profileUrl);
+      await UserModel.updateUserProfile(id, profile!.secure_url, profile!.public_id);
+    }
+    return;
+  } catch (error) {
+    logger.error(error);
+    throw new ApiError(HttpStatusCode.BAD_REQUEST, "Error while updating user profile");
+  }
 }
 
 const isPasswordValid = (plainPassword: string, hashedPassword: string) => {

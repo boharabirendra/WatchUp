@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as UserController from "../controllers/users.controller";
-import { changePasswordBodyParser, loginUserBodyParser, registerUserBodyParser, updateUserBodyParser } from "../middlewares/multer.middleware";
+import { changePasswordBodyParser, loginUserBodyParser, registerUserBodyParser, updateUserBodyParser, upload } from "../middlewares/multer.middleware";
 import { validateReqBody } from "../middlewares/validator.middleware";
 import { changePasswordBodySchema, loginBodySchema, registerUserBodySchema, updateBodySchema } from "../schema/user.schema";
 import { authenticate } from "../middlewares/auth.middleware";
@@ -32,6 +32,12 @@ router.route("/change-password").put(
     changePasswordBodyParser,
     validateReqBody(changePasswordBodySchema),
     UserController.changePassword
+)
+
+router.route("/update-profile").put(
+    authenticate,
+    upload.single("profile"),
+    UserController.updateUserProfile
 )
 
 export default router;

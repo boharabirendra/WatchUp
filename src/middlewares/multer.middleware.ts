@@ -8,7 +8,8 @@ const storage = multer.diskStorage({
     cb(null, file.originalname);
   },
 });
-const upload = multer({ storage });
+
+export const upload = multer({ storage });
 
 export const registerUserBodyParser = upload.fields([
   { name: "profile", maxCount: 1 },

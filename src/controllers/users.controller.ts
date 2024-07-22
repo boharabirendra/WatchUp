@@ -5,6 +5,7 @@ import * as UserService from "../services/users.service";
 import { ApiResponse } from "../utils/ApiResponse.utils";
 import { cookiesOptions } from "../utils/cookiesOption.utils";
 import { AuthRequest } from "../interface/auth.interface";
+import { ApiError } from "../utils/ApiError.utils";
 
 /**Register user */
 export const registerUser = asyncHandler(
@@ -43,7 +44,6 @@ export const changePassword = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const { oldPassword, newPassword } = req.body;
     const {id} = req.user;
-    console.log({ id, oldPassword, newPassword });
     await UserService.changePassword({ id, oldPassword, newPassword });
     res
       .status(HttpStatusCode.OK)
@@ -71,4 +71,16 @@ export const updateUser = asyncHandler(async(req: AuthRequest, res: Response)=>{
   res.status(HttpStatusCode.OK).json(
     new ApiResponse("User updated successfully")
   )
+})
+
+export const updateUserProfile = asyncHandler(async(req: AuthRequest, res: Response)=>{
+  const {id} = req.user;
+  const profileUrl = req.file?.path;
+  if(!profileUrl) {
+    throw new ApiError(HttpStatusCode.BAD_REQUEST, "Profile image file is missing");
+  }
+  await UserService.updateUserProfile({id, profileUrl})
+  res.status(HttpStatusCode.OK).json(
+    new ApiResponse("User profile updated successfully")
+  );
 })

@@ -16,6 +16,11 @@ export type ChangePassword = {
   oldPassword: string;
 };
 
+export type UpdaterUserProfile = {
+  id: number;
+  profileUrl: string;
+}
+
 
 export type UserArgs = {
   id?: number;
