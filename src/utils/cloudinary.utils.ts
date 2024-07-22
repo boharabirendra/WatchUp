@@ -2,6 +2,7 @@ import {v2 as cloudinary} from "cloudinary";
 import fs from "fs";
 import config from "../config";
 
+
 cloudinary.config({
     cloud_name: config.cloudinary.cloud_name,
     api_key: config.cloudinary.api_key,
@@ -14,11 +15,9 @@ export const uploadOnCloudinary = async (localFilePath: string) =>{
         const response = await cloudinary.uploader.upload(localFilePath, {
             resource_type: "auto"
         });
-        console.log(response.secure_url);
         return response;
     } catch (error) {
         /**Remove file, if upload fail */
-        console.log(error);
         fs.unlinkSync(localFilePath);
         return null;
     }

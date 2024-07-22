@@ -1,7 +1,14 @@
+import dotenv from "dotenv";
+dotenv.config({
+    path: './.env'
+})
+
 import app from "./app";
 import config from "./config";
 import { connectDB } from "./db/prisma.db";
 import loggerWithNameSpace from "./utils/logger.utils";
+
+
 
 connectDB()
 .then(()=>{
