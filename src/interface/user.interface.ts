@@ -9,7 +9,7 @@ export interface IUser {
 }
 
 export type LoginCredentials = Pick<IUser, "email" | "password">;
-export type UpdateUser = Pick<IUser, "id" | "email" | "fullName">;
+export type UpdateUser = Pick<IUser, "id" | "fullName" | "profileUrl">;
 export type ChangePassword = {
   id: number;
   newPassword: string;
@@ -25,4 +25,10 @@ export type UpdaterUserProfile = {
 export type UserArgs = {
   id?: number;
   email?: string;
+}
+
+export interface GetUserQuery{
+  q?: string;
+  page: number;
+  size: number;
 }

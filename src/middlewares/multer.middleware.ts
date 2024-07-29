@@ -1,5 +1,12 @@
 import multer from "multer";
 
+/**
+ *  // Store the file in memory
+    const storage = multer.memoryStorage(); 
+    const upload = multer({ storage: storage });
+ * 
+ */
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./public/temp");
@@ -19,18 +26,25 @@ export const registerUserBodyParser = upload.fields([
 ]);
 
 export const loginUserBodyParser = upload.fields([
-  {name: "email", maxCount: 1},
-  {name: "password", maxCount: 1}
-])
+  { name: "email", maxCount: 1 },
+  { name: "password", maxCount: 1 },
+]);
 
 export const updateUserBodyParser = upload.fields([
-  {name: "email", maxCount: 1},
-  {name: "fullName", maxCount: 1}
-])
+  { name: "email", maxCount: 1 },
+  { name: "fullName", maxCount: 1 },
+  { name: "profile", maxCount: 1 },
+]);
 
 export const changePasswordBodyParser = upload.fields([
-  {name: "id", maxCount: 1},
-  {name: "oldPassword", maxCount: 1},
-  {name: "newPassword", maxCount: 1}
-])
+  { name: "id", maxCount: 1 },
+  { name: "oldPassword", maxCount: 1 },
+  { name: "newPassword", maxCount: 1 },
+]);
 
+export const uploadVideoBodyParser = upload.fields([
+  { name: "video", maxCount: 1 },
+  { name: "thumbnail", maxCount: 1 },
+  { name: "title", maxCount: 1 },
+  { name: "description", maxCount: 1 },
+]);
