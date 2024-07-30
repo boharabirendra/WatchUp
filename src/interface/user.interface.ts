@@ -1,3 +1,4 @@
+
 export interface IUser {
   id?: number;
   fullName: string;
@@ -6,6 +7,7 @@ export interface IUser {
   profileUrl: string;
   imagePublicId: string;
   refreshToken: string;
+  role: string
 }
 
 export type LoginCredentials = Pick<IUser, "email" | "password">;

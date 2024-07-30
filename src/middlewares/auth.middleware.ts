@@ -23,7 +23,7 @@ export const authenticate = (
 
   const token = authorization.split(" ");
   if (token.length !== 2 || token[0] !== "Bearer") {
-    return next(new UnauthenticatedError("Invalid access token"));
+     throw new UnauthenticatedError("Invalid access token");
   }
   try {
     const payload = jwt.verify(
@@ -32,6 +32,7 @@ export const authenticate = (
     ) as IUser;
     req.user = {
       id: payload.id,
+      role: payload.role,
     };
     next();
   } catch (error) {

@@ -1,11 +1,12 @@
+import { Request, Response } from "express";
 import HttpStatusCode from "http-status-codes";
-import { NextFunction, Request, Response } from "express";
 
 import { NotFoundError } from "../errors/error.error";
 import { ApiResponse } from "../utils/ApiResponse.utils";
 import { AuthRequest } from "../interface/auth.interface";
 import * as VideoService from "../services/videos.service";
 import { catchAsyncError } from "../utils/catchError.utils";
+import { GetUserQuery } from "../interface/user.interface";
 
 export const createVideo = catchAsyncError(
   async (req: AuthRequest, res: Response) => {
@@ -30,8 +31,9 @@ export const createVideo = catchAsyncError(
 );
 
 export const getVideos = catchAsyncError(
-  async (req: Request, res: Response) => {
-    const videos = await VideoService.getVideos();
+  async (req: Request<any, any, any, any>, res: Response) => {
+    const { q, size, page } = req.query;
+    const videos = await VideoService.getVideos({ q, size, page });
     res.status(HttpStatusCode.OK).json(new ApiResponse("Videos list", videos));
   }
 );
@@ -65,10 +67,7 @@ export const updateVideoViews = catchAsyncError(
   }
 );
 
-export const deleteVideoById = async (
-  req: AuthRequest,
-  res: Response,
-) => {
+export const deleteVideoById = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
     const { id: userId } = req.user;
@@ -96,4 +95,3 @@ export const getVideoByPublicId = catchAsyncError(
     res.status(HttpStatusCode.OK).json(new ApiResponse("Video", video));
   }
 );
-

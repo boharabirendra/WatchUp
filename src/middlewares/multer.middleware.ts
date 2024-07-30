@@ -23,6 +23,7 @@ export const registerUserBodyParser = upload.fields([
   { name: "email", maxCount: 1 },
   { name: "fullName", maxCount: 1 },
   { name: "password", maxCount: 1 },
+  { name: "role", maxCount: 1 },
 ]);
 
 export const loginUserBodyParser = upload.fields([
@@ -47,4 +48,9 @@ export const uploadVideoBodyParser = upload.fields([
   { name: "thumbnail", maxCount: 1 },
   { name: "title", maxCount: 1 },
   { name: "description", maxCount: 1 },
+]);
+
+export const commentBodyParser = upload.fields([
+  { name: "text", maxCount: 1 },
+  { name: "videoId", maxCount: 1 },
 ]);

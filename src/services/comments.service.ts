@@ -14,3 +14,27 @@ export const createComment = async(comment: IComment) =>{
         throw new InternalServerError("Error while adding comment");
     }
 }
+
+export const getComments = async(videoId: number) =>{
+    try {
+    const comments = await CommentModel.getComments(videoId);
+    if (!comments || !comments.userComment) {
+        return [];
+        }
+    
+        return comments.userComment.map(userComment => ({
+        id: userComment.comment.id,
+        text: userComment.comment.text,
+        createdAt: userComment.comment.createdAt,
+        user: {
+            id: userComment.user.id,
+            fullName: userComment.user.fullName,
+            email: userComment.user.email,
+            profileUrl: userComment.user.profileUrl
+        }
+        }));
+    } catch (error) {
+      logger.error(error);
+      throw new InternalServerError("Error while fetching comments");
+    }
+}
