@@ -14,11 +14,17 @@ export const uploadImageOnCloudinary = async (localFilePath: string) => {
     const response = await cloudinary.uploader.upload(localFilePath, {
       resource_type: "auto",
     });
+
+    fs.unlinkSync(localFilePath);
+
     return response;
   } catch (error) {
-    /**Remove file, if upload fail */
     fs.unlinkSync(localFilePath);
     return null;
+  } finally {
+    if (fs.existsSync(localFilePath)) {
+      fs.unlinkSync(localFilePath);
+    }
   }
 };
 
@@ -28,13 +34,14 @@ export const uploadVideoOnCloudinary = async (localFilePath: string) => {
     const response = await cloudinary.uploader.upload(localFilePath, {
       resource_type: "video",
     });
+    fs.unlinkSync(localFilePath);
     return response;
   } catch (error) {
-    /**Remove file, if upload fail */
     fs.unlinkSync(localFilePath);
     return null;
+  } finally {
+    if (fs.existsSync(localFilePath)) {
+      fs.unlinkSync(localFilePath);
+    }
   }
 };
-
-
-

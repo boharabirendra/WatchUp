@@ -42,6 +42,9 @@ export const registerUserBodySchema = Joi.object({
       "any.required": "Full name is required",
     }),
   password: passwordSchema,
+  role: Joi.string().required().messages({
+    "any.required": "Role is required",
+  })
 }).options({
   stripUnknown: true,
 });

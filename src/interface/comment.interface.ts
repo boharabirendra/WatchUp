@@ -1,6 +1,5 @@
 export interface IComment{
-    title: string;
-    description: string;
+    text: string;
     videoId: number;
     userId: number;
 }

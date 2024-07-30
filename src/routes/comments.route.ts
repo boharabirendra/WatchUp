@@ -1,19 +1,16 @@
-import {Router} from "express";
+import { Router } from "express";
 import { authenticate } from "../middlewares/auth.middleware";
-import * as CommentService from "../services/comments.service";
-
+import * as CommentController from "../controllers/comments.controller";
+import { commentBodyParser } from "../middlewares/multer.middleware";
 
 const router = Router();
 
+router
+  .route("/create-comment")
+  .post(authenticate, commentBodyParser, CommentController.createComment);
 
-router.route("/create-comment").post(
-    authenticate,
-    CommentService.createComment
-)
-
-
-
-
-
+router
+  .route("/get-comments/:videoId")
+  .get(CommentController.getComments);
 
 export default router;

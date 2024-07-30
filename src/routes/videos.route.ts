@@ -14,7 +14,6 @@ import { authorize } from "../middlewares/authorize.middleware";
 import { verifyVideo } from "../middlewares/verifyVideo.middelware";
 import { uploadVideoBodyParser } from "../middlewares/multer.middleware";
 
-import { ROLE } from "../constants/role.constants";
 
 const router = Router();
 
@@ -22,7 +21,7 @@ router
   .route("/add-video")
   .post(
     authenticate,
-    authorize(ROLE.CREATOR),
+    authorize("CREATOR"),
     uploadVideoBodyParser,
     verifyVideo,
     validateReqBody(videoReqBodySchema),

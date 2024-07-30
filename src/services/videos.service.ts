@@ -32,9 +32,9 @@ export const createVideo = async (video: UploadVideo, userId: number) => {
   }
 };
 
-export const getVideos = async () => {
+export const getVideos = async ({ q, size, page }: GetUserQuery) => {
   try {
-    const videos = await VideoModel.getVideos();
+    const videos = await VideoModel.getVideos({q, size, page});
     if (!videos) return null;
     return videos.map((video) => ({
       id: video.id,
