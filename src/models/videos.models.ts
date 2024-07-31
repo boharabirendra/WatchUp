@@ -20,10 +20,12 @@ export const createVideo = (video: IVideo, userId: number) => {
 
 export const getVideos = ({ q, size, page }: GetUserQuery) => {
   return prisma.video.findMany({
-    where: {title: {
-      contains: q,
-      mode: "insensitive"
-    }},
+    where: {
+      title: {
+        contains: q,
+        mode: "insensitive",
+      },
+    },
     include: {
       userVideos: {
         include: {
@@ -42,7 +44,6 @@ export const getVideos = ({ q, size, page }: GetUserQuery) => {
     take: size,
   });
 };
-
 
 export const updateVideoDetail = (
   { title, description }: updateVideoInfo,
@@ -95,7 +96,7 @@ export const getVideoById = (id: number, userId: number) => {
 
 export const getVideoByPublicId = (videoPublicId: string) => {
   return prisma.video.findMany({
-    where: {videoPublicId},
+    where: { videoPublicId },
     include: {
       userVideos: {
         include: {
@@ -126,7 +127,7 @@ export const getSuggestionVideos = (videoPublicId: string) => {
               id: true,
               fullName: true,
               email: true,
-              profileUrl: true
+              profileUrl: true,
             },
           },
         },
@@ -134,5 +135,3 @@ export const getSuggestionVideos = (videoPublicId: string) => {
     },
   });
 };
-
-

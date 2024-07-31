@@ -13,31 +13,30 @@ export const getLikeStatus = async (videoPublicId: string, userId: number) => {
   }
 };
 
-
 export const updateLikeCount = async (
-    videoPublicId: string,
-    userId: number
-  ) => {
-    try {
-      const isLikeExist = await LikeModel.getLikeStatus(videoPublicId, userId);
-      const updatedLikeCount = await LikeModel.updateLikeCount(
-        videoPublicId,
-        userId,
-        !isLikeExist
-      );
-      return updatedLikeCount;
-    } catch (error) {
-      logger.error(error);
-      throw new InternalServerError("Error while updating like count");
-    }
-  };
+  videoPublicId: string,
+  userId: number
+) => {
+  try {
+    const isLikeExist = await LikeModel.getLikeStatus(videoPublicId, userId);
+    const updatedLikeCount = await LikeModel.updateLikeCount(
+      videoPublicId,
+      userId,
+      !isLikeExist
+    );
+    return updatedLikeCount;
+  } catch (error) {
+    logger.error(error);
+    throw new InternalServerError("Error while updating like count");
+  }
+};
 
-export const getLikeCount = async(videoPublicId: string) =>{
-    try {
-        const likes = await LikeModel.getLikeCount(videoPublicId);
-        return likes;
-    } catch (error) {   
-        logger.error(error);
-        throw new InternalServerError("Error while fetching likes count");
-    }
-}
+export const getLikeCount = async (videoPublicId: string) => {
+  try {
+    const likes = await LikeModel.getLikeCount(videoPublicId);
+    return likes;
+  } catch (error) {
+    logger.error(error);
+    throw new InternalServerError("Error while fetching likes count");
+  }
+};

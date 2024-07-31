@@ -11,9 +11,7 @@ import {
   UpdaterUserProfile,
 } from "../interface/user.interface";
 
-import {
-  generateAccessAndRefreshToken,
-} from "../utils/generateTokens.utils";
+import { generateAccessAndRefreshToken } from "../utils/generateTokens.utils";
 import loggerWithNameSpace from "../utils/logger.utils";
 import { uploadImageOnCloudinary } from "../utils/cloudinary.utils";
 import { generateHashedPassword } from "../utils/generateHashedPassword.utils";
@@ -53,7 +51,6 @@ export const registerUser = async (user: IUser) => {
   }
 };
 
-
 /**login user */
 export const loginUser = async ({ email, password }: LoginCredentials) => {
   const existingUser = await isUserExists({ email });
@@ -70,7 +67,8 @@ export const loginUser = async ({ email, password }: LoginCredentials) => {
     profileUrl: existingUser.profileUrl,
   };
   try {
-    const {accessToken, refreshToken} = generateAccessAndRefreshToken(payload);
+    const { accessToken, refreshToken } =
+      generateAccessAndRefreshToken(payload);
     await updateRefreshToken(existingUser.id, refreshToken);
     const user = await UserModel.getUserByEmail(email);
     const userWithOutPassword = { ...user, password: "" };
@@ -80,7 +78,6 @@ export const loginUser = async ({ email, password }: LoginCredentials) => {
     throw new InternalServerError("Login failed.");
   }
 };
-
 
 /**change password */
 export const changePassword = async ({
@@ -120,9 +117,9 @@ export const updateRefreshToken = async (id: number, refreshToken: string) => {
       id: user.id,
       email: user.email,
       fullName: user.fullName,
-      role: user.role
-    }
-    return  generateAccessAndRefreshToken(payload);
+      role: user.role,
+    };
+    return generateAccessAndRefreshToken(payload);
   } catch (error) {
     logger.error(error);
     throw new InternalServerError("Failed to update refresh token");
@@ -132,7 +129,7 @@ export const updateRefreshToken = async (id: number, refreshToken: string) => {
 /**update user */
 export const updateUser = async ({ id, fullName, profileUrl }: UpdateUser) => {
   try {
-    if(profileUrl){
+    if (profileUrl) {
       const cResponse = await uploadImageOnCloudinary(profileUrl);
       profileUrl = cResponse!.secure_url;
     }
@@ -143,8 +140,8 @@ export const updateUser = async ({ id, fullName, profileUrl }: UpdateUser) => {
   }
 };
 
-/**get user by id  */ 
-export const getUserById = async(id: number) =>{
+/**get user by id  */
+export const getUserById = async (id: number) => {
   try {
     const user = await UserModel.getUserById(id);
     return user;
@@ -152,19 +149,18 @@ export const getUserById = async(id: number) =>{
     logger.error(error);
     throw new InternalServerError("Error while fetching user");
   }
-}
+};
 
 /**get user by email */
-export const getUserByEmail = async(email: string) =>{
+export const getUserByEmail = async (email: string) => {
   try {
-    const user = await UserModel.getUserByEmail(email)
+    const user = await UserModel.getUserByEmail(email);
     return user;
   } catch (error) {
     logger.error(error);
-    throw new InternalServerError("Error while fetching user")
+    throw new InternalServerError("Error while fetching user");
   }
-}
-
+};
 
 /* update profile */
 export const updateUserProfile = async ({

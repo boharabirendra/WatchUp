@@ -13,4 +13,14 @@ router
   .route("/get-comments/:videoId")
   .get(CommentController.getComments);
 
+
+router.route("/delete/:id").delete(
+  authenticate,
+  CommentController.deleteCommentById
+)
+
+router.route("/update/:id").put(
+  authenticate,
+  CommentController.updateCommentById
+)
 export default router;

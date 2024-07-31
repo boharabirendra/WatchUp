@@ -14,7 +14,6 @@ import { authorize } from "../middlewares/authorize.middleware";
 import { verifyVideo } from "../middlewares/verifyVideo.middelware";
 import { uploadVideoBodyParser } from "../middlewares/multer.middleware";
 
-
 const router = Router();
 
 router
@@ -28,14 +27,13 @@ router
     VideoController.createVideo
   );
 
-router.route("/get-videos").get(
-  validateReqQuery(getUserQuerySchema),
-  VideoController.getVideos
-);
+router
+  .route("/get-videos")
+  .get(validateReqQuery(getUserQuerySchema), VideoController.getVideos);
 
-router.route("/get-suggestion-vidoes/:videoPublicId").get(
-  VideoController.getSuggestionVideos
-);
+router
+  .route("/get-suggestion-vidoes/:videoPublicId")
+  .get(VideoController.getSuggestionVideos);
 
 router.route("/get-video/:id").get(authenticate, VideoController.getVideoById);
 

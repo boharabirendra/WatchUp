@@ -6,7 +6,6 @@ import { ApiResponse } from "../utils/ApiResponse.utils";
 import { AuthRequest } from "../interface/auth.interface";
 import * as VideoService from "../services/videos.service";
 import { catchAsyncError } from "../utils/catchError.utils";
-import { GetUserQuery } from "../interface/user.interface";
 
 export const createVideo = catchAsyncError(
   async (req: AuthRequest, res: Response) => {

@@ -8,7 +8,6 @@ import { AuthRequest } from "../interface/auth.interface";
 import { ApiResponse } from "../utils/ApiResponse.utils";
 import { catchAsyncError } from "../utils/catchError.utils";
 
-
 /**Register user */
 export const registerUser = catchAsyncError(
   async (req: Request, res: Response) => {
@@ -29,7 +28,7 @@ export const loginUser = catchAsyncError(
   async (req: Request, res: Response) => {
     const loginCredentials = req.body;
     const user = await UserService.loginUser(loginCredentials);
-    res.cookie("accessToken", user.accessToken, {httpOnly: true});
+    res.cookie("accessToken", user.accessToken, { httpOnly: true });
     res.status(HttpStatusCode.OK).json(
       new ApiResponse("User logged In Successfully", {
         ...user,
@@ -55,9 +54,7 @@ export const getUserById = catchAsyncError(
   async (req: AuthRequest, res: Response) => {
     const { id } = req.user;
     const user = await UserService.getUserById(id);
-    res.status(HttpStatusCode.OK).json(
-      new ApiResponse("User detail", user)
-    )
+    res.status(HttpStatusCode.OK).json(new ApiResponse("User detail", user));
   }
 );
 
@@ -103,7 +100,6 @@ export const updateUserProfile = catchAsyncError(
       .json(new ApiResponse("User profile updated successfully"));
   }
 );
-
 
 /**Update refresh token */
 
