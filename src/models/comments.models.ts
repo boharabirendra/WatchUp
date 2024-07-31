@@ -20,10 +20,18 @@ export const createComment = ({ text, videoId, userId }: IComment) => {
 };
 
 
+
+export const deleteCommentById = (id: number) => {
+  return prisma.comment.delete({
+    where: { id },
+  });
+};
+
+
 export const getComments = async (videoId: number) => {
   return await prisma.video.findUnique({
     where: {
-      id: videoId
+      id: videoId,
     },
     select: {
       userComment: {
@@ -33,23 +41,35 @@ export const getComments = async (videoId: number) => {
               id: true,
               text: true,
               createdAt: true,
-            }
+              updatedAt: true
+            },
           },
           user: {
             select: {
               id: true,
               fullName: true,
               email: true,
-              profileUrl: true
-            }
-          }
+              profileUrl: true,
+            },
+          },
         },
         orderBy: {
           comment: {
-            createdAt: 'desc'
-          }
-        }
-      }
-    }
+            createdAt: "desc",
+          },
+        },
+      },
+    },
+  });
+};
+
+export const updateCommentById = (id: number, text: string) => {
+  return prisma.comment.update({
+    data: {
+      text,
+    },
+    where: {
+      id,
+    },
   });
 };

@@ -20,11 +20,13 @@ export const verifyUser = async(
 ) => {
   const { authorization } = req.headers;
   if (!authorization) {
-    throw new UnauthenticatedError("Access token required");
+    next(new UnauthenticatedError("Access token required"));
+    return;
   }
   const token = authorization.split(" ");
   if (token.length !== 2 || token[0] !== "Bearer") {
-    return next(new UnauthenticatedError("Invalid access token"));
+    next(new UnauthenticatedError("Invalid access token"));
+    return;
   }
   try {
     const playload = jwt.verify(token[1], config.jwt.access_token_secret!) as IPayload;
@@ -32,6 +34,7 @@ export const verifyUser = async(
     res.status(200).json(new ApiResponse("Verified", user));
   } catch (error) {
     logger.error(error);
-    throw new UnauthenticatedError("Invalid access token");
+    next(new UnauthenticatedError("Invalid access token"));
+    return;
   }
 };
